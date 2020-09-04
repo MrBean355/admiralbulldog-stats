@@ -1,9 +1,5 @@
 package com.github.mrbean355.bulldogstats
 
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.withContext
-import kotlin.random.Random
-
 data class Statistics(
         val activeUsers: Int,
         val appVersions: Map<String, Int>,
@@ -14,14 +10,24 @@ data class Statistics(
         val modVersion: Map<String, Int>,
 )
 
-suspend fun loadStatistics(): Statistics = withContext(IO) {
-    Statistics(
-            activeUsers = Random.nextInt(1, 30),
-            appVersions = mapOf(),
-            platforms = mapOf(),
-            discordBot = mapOf(),
-            topSounds = mapOf(),
-            dotaMod = mapOf(),
-            modVersion = mapOf(),
-    )
-}
+private val cache = Statistics(
+        activeUsers = 13,
+        appVersions = mapOf(),
+        platforms = mapOf(
+                "Windows" to 100,
+                "Linux" to 5,
+                "Mac" to 10
+        ),
+        discordBot = mapOf(
+                "true" to 65,
+                "false" to 45
+        ),
+        topSounds = mapOf(),
+        dotaMod = mapOf(
+                "true" to 75,
+                "false" to 35
+        ),
+        modVersion = mapOf()
+)
+
+fun getStatistics() = cache
