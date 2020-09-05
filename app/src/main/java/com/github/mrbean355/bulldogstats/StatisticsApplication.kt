@@ -6,6 +6,13 @@ class StatisticsApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        application = this
+        instance = this
+    }
+
+    companion object {
+        private var instance: Application? = null
+
+        fun getInstance(): Application = instance!!
+
     }
 }

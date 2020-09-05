@@ -3,10 +3,19 @@
 
     <string name="action_refresh">Refresh</string>
     <string name="action_settings">Settings</string>
+    <string name="action_shut_down">Shut down</string>
     <string name="label_recent_users">Recent users: %d</string>
     <string name="label_daily_users">Daily users: %d</string>
 
     <string name="key_pref_token">pref_key_token</string>
     <string name="title_pref_token">Token</string>
     <string name="summary_pref_token">Token for fetching the statistics</string>
+
+    <string name="key_pref_shut_down">pref_key_shut_down</string>
+    <string name="title_pref_shut_down">Shut down</string>
+    <string name="summary_pref_shut_down">Shut down the backend</string>
+    <string name="title_confirm">Confirm</string>
+    <string name="message_confirm_shut_down">Really shut the backend down?</string>
+    <string name="message_shut_down_success">Shut down was successful</string>
+    <string name="message_shut_down_error">Shut down failed</string>
 </resources>

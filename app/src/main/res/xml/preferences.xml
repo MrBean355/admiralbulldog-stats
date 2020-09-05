@@ -9,4 +9,10 @@
         android:title="@string/title_pref_token"
         app:iconSpaceReserved="false" />
 
+    <Preference
+        android:key="@string/key_pref_shut_down"
+        android:summary="@string/summary_pref_shut_down"
+        android:title="@string/title_pref_shut_down"
+        app:iconSpaceReserved="false" />
+
 </PreferenceScreen>

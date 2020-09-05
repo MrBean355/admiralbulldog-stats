@@ -1,6 +1,5 @@
 package com.github.mrbean355.bulldogstats
 
-import android.app.Application
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.sync.Mutex
@@ -11,6 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.io.EOFException
 
 data class StatisticsResponse(
         val recentUsers: Int,
@@ -18,7 +18,6 @@ data class StatisticsResponse(
         val properties: Map<String, Map<String, Int>>
 )
 
-lateinit var application: Application
 private val lock = Mutex()
 private var cache: StatisticsResponse? = null
 
@@ -33,8 +32,7 @@ class StatisticsRepository {
         lock.withLock {
             var localCache = cache
             if (localCache == null) {
-                val token = PreferenceManager.getDefaultSharedPreferences(application).getString(application.getString(R.string.key_pref_token), null).orEmpty()
-                localCache = service.getStatistics(token)
+                localCache = service.getStatistics(loadToken())
                 cache = localCache
             }
             localCache
@@ -50,11 +48,32 @@ class StatisticsRepository {
             cache = null
         }
     }
+
+    suspend fun shutDown() = withContext(IO) {
+        try {
+            service.shutDown(loadToken())
+        } catch (t: Throwable) {
+            if (t.cause is EOFException) {
+                // Swallow; this means the shut down was successful.
+            } else {
+                throw t
+            }
+        }
+    }
+}
+
+private fun loadToken(): String {
+    val app = StatisticsApplication.getInstance()
+    return PreferenceManager.getDefaultSharedPreferences(app)
+            .getString(app.getString(R.string.key_pref_token), null).orEmpty()
 }
 
 private interface StatisticsService {
 
     @GET("statistics/get")
     suspend fun getStatistics(@Query("token") token: String): StatisticsResponse
+
+    @GET("metadata/shutdown")
+    suspend fun shutDown(@Query("token") token: String)
 
 }
