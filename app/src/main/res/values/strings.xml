@@ -2,6 +2,11 @@
     <string name="app_name">Bulldog Stats</string>
 
     <string name="action_refresh">Refresh</string>
+    <string name="action_settings">Settings</string>
     <string name="label_recent_users">Recent users: %d</string>
     <string name="label_daily_users">Daily users: %d</string>
+
+    <string name="key_pref_token">pref_key_token</string>
+    <string name="title_pref_token">Token</string>
+    <string name="summary_pref_token">Token for fetching the statistics</string>
 </resources>

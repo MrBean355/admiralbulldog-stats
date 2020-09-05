@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -17,7 +16,7 @@ private const val VALUE_TEXT_SIZE_DP = 18f
 private const val ANIM_DURATION_MS = 750
 private const val KEY_PROPERTY_KEY = "PROPERTY_KEY"
 
-class ViewChartActivity : AppCompatActivity(R.layout.activity_view_chart) {
+class ViewChartActivity : BackButtonActivity(R.layout.activity_view_chart) {
     private val viewModel by viewModels<ViewChartViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {

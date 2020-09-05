@@ -1,5 +1,6 @@
 package com.github.mrbean355.bulldogstats
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -46,6 +47,9 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.refresh) {
             viewModel.onRefreshClicked()
+            return true
+        } else if (item.itemId == R.id.settings) {
+            startActivity(Intent(this, SettingsActivity::class.java))
             return true
         }
         return super.onOptionsItemSelected(item)

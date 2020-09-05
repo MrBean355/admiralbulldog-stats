@@ -1,5 +1,6 @@
 package com.github.mrbean355.bulldogstats
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,11 +28,15 @@ class MainViewModel : ViewModel() {
     private fun loadStatistics() {
         loading.value = true
         viewModelScope.launch {
-            val stats = statisticsRepository.getStats()
+            try {
+                val stats = statisticsRepository.getStats()
+                recentUsers.value = stats.recentUsers
+                dailyUsers.value = stats.dailyUsers
+                properties.value = stats.properties.keys.toList()
+            } catch (t: Throwable) {
+                Log.e("MainViewModel", "Error getting stats", t)
+            }
             loading.value = false
-            recentUsers.value = stats.recentUsers
-            dailyUsers.value = stats.dailyUsers
-            properties.value = stats.properties.keys.toList()
         }
     }
 }

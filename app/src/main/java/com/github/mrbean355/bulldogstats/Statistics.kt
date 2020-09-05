@@ -1,5 +1,7 @@
 package com.github.mrbean355.bulldogstats
 
+import android.app.Application
+import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -16,6 +18,7 @@ data class StatisticsResponse(
         val properties: Map<String, Map<String, Int>>
 )
 
+lateinit var application: Application
 private val lock = Mutex()
 private var cache: StatisticsResponse? = null
 
@@ -30,8 +33,8 @@ class StatisticsRepository {
         lock.withLock {
             var localCache = cache
             if (localCache == null) {
-                // TODO: store in shared prefs
-                localCache = service.getStatistics("")
+                val token = PreferenceManager.getDefaultSharedPreferences(application).getString(application.getString(R.string.key_pref_token), null).orEmpty()
+                localCache = service.getStatistics(token)
                 cache = localCache
             }
             localCache

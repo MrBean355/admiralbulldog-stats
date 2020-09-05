@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".StatisticsApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,6 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ViewChartActivity" />
+        <activity android:name=".SettingsActivity" />
     </application>
 
 </manifest>
