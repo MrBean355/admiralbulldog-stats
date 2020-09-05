@@ -1,49 +1,53 @@
 package com.github.mrbean355.bulldogstats
 
-import android.graphics.Color
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
-import com.github.mikephil.charting.utils.ColorTemplate
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        pie_chart.apply {
-            description.isEnabled = false
-            legend.isEnabled = false
-            isDrawHoleEnabled = false
+        val adapter = StatisticsAdapter(horizontal = false) {
+            startActivity(ViewChartActivity(this, it))
+        }
+        statistics.adapter = adapter
+        statistics.addItemDecoration(DividerItemDecoration(this, VERTICAL))
 
-            setEntryLabelTextSize(14f)
-            setEntryLabelColor(Color.BLACK)
+        viewModel.loading.observe(this) {
+            progress_bar.isVisible = it
         }
-
-        platforms.setOnClickListener {
-            renderGraph(getStatistics().platforms)
+        viewModel.recentUsers.observe(this) {
+            stats_heading.isVisible = true
+            recent_users.text = getString(R.string.label_recent_users, it)
         }
-        discord_bot.setOnClickListener {
-            renderGraph(getStatistics().discordBot)
+        viewModel.dailyUsers.observe(this) {
+            daily_users.text = getString(R.string.label_daily_users, it)
         }
-        dota_mod.setOnClickListener {
-            renderGraph(getStatistics().dotaMod)
+        viewModel.properties.observe(this) {
+            adapter.submitList(it)
         }
     }
 
-    private fun renderGraph(data: Map<String, Int>) {
-        val entries = data.map {
-            PieEntry(it.value.toFloat(), it.key)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.refresh) {
+            viewModel.onRefreshClicked()
+            return true
         }
-        pie_chart.data = PieData(PieDataSet(entries, "Platforms").also {
-            it.colors = ColorTemplate.MATERIAL_COLORS.toList()
-            it.valueTextSize = 18f
-            it.sliceSpace = 4f
-        })
-        pie_chart.animateY(1_000)
+        return super.onOptionsItemSelected(item)
     }
 }

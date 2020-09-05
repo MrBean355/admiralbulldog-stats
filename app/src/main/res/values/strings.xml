@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Bulldog Stats</string>
+
+    <string name="action_refresh">Refresh</string>
+    <string name="label_recent_users">Recent users: %d</string>
+    <string name="label_daily_users">Daily users: %d</string>
 </resources>

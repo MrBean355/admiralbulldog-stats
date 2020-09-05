@@ -1,33 +1,57 @@
 package com.github.mrbean355.bulldogstats
 
-data class Statistics(
-        val activeUsers: Int,
-        val appVersions: Map<String, Int>,
-        val platforms: Map<String, Int>,
-        val discordBot: Map<String, Int>,
-        val topSounds: Map<String, Int>,
-        val dotaMod: Map<String, Int>,
-        val modVersion: Map<String, Int>,
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+data class StatisticsResponse(
+        val recentUsers: Int,
+        val dailyUsers: Int,
+        val properties: Map<String, Map<String, Int>>
 )
 
-private val cache = Statistics(
-        activeUsers = 13,
-        appVersions = mapOf(),
-        platforms = mapOf(
-                "Windows" to 100,
-                "Linux" to 5,
-                "Mac" to 10
-        ),
-        discordBot = mapOf(
-                "true" to 65,
-                "false" to 45
-        ),
-        topSounds = mapOf(),
-        dotaMod = mapOf(
-                "true" to 75,
-                "false" to 35
-        ),
-        modVersion = mapOf()
-)
+private val lock = Mutex()
+private var cache: StatisticsResponse? = null
 
-fun getStatistics() = cache
+class StatisticsRepository {
+    private val service = Retrofit.Builder()
+            .baseUrl(BuildConfig.HOST_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create<StatisticsService>()
+
+    suspend fun getStats(): StatisticsResponse = withContext(IO) {
+        lock.withLock {
+            var localCache = cache
+            if (localCache == null) {
+                // TODO: store in shared prefs
+                localCache = service.getStatistics("")
+                cache = localCache
+            }
+            localCache
+        }
+    }
+
+    suspend fun getProperties(key: String): Map<String, Int> = withContext(IO) {
+        getStats().properties.getValue(key)
+    }
+
+    suspend fun invalidate() {
+        lock.withLock {
+            cache = null
+        }
+    }
+}
+
+private interface StatisticsService {
+
+    @GET("statistics/get")
+    suspend fun getStatistics(@Query("token") token: String): StatisticsResponse
+
+}
