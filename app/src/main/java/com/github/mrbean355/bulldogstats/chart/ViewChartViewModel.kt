@@ -1,8 +1,9 @@
-package com.github.mrbean355.bulldogstats
+package com.github.mrbean355.bulldogstats.chart
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.mrbean355.bulldogstats.data.StatisticsRepository
 import kotlinx.coroutines.launch
 
 class ViewChartViewModel : ViewModel() {

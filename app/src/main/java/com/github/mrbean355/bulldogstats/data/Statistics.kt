@@ -1,6 +1,9 @@
-package com.github.mrbean355.bulldogstats
+package com.github.mrbean355.bulldogstats.data
 
 import androidx.preference.PreferenceManager
+import com.github.mrbean355.bulldogstats.BuildConfig
+import com.github.mrbean355.bulldogstats.R
+import com.github.mrbean355.bulldogstats.StatisticsApplication
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock

@@ -1,4 +1,4 @@
-package com.github.mrbean355.bulldogstats
+package com.github.mrbean355.bulldogstats.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
+import com.github.mrbean355.bulldogstats.R
+import com.github.mrbean355.bulldogstats.StatisticsAdapter
+import com.github.mrbean355.bulldogstats.chart.ViewChartActivity
+import com.github.mrbean355.bulldogstats.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

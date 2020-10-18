@@ -1,4 +1,4 @@
-package com.github.mrbean355.bulldogstats
+package com.github.mrbean355.bulldogstats.chart
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,9 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import com.github.mrbean355.bulldogstats.BackButtonActivity
+import com.github.mrbean355.bulldogstats.R
+import com.github.mrbean355.bulldogstats.StatisticsAdapter
 import kotlinx.android.synthetic.main.activity_view_chart.*
 
 private const val SLICE_SPACE_DP = 4f

@@ -1,10 +1,13 @@
-package com.github.mrbean355.bulldogstats
+package com.github.mrbean355.bulldogstats.settings
 
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.github.mrbean355.bulldogstats.R
+import com.github.mrbean355.bulldogstats.showError
+import com.github.mrbean355.bulldogstats.showSuccess
 import com.google.android.material.snackbar.Snackbar
 
 class SettingsFragment : PreferenceFragmentCompat() {
