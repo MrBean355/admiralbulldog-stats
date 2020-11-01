@@ -33,7 +33,7 @@ class MainViewModel : ViewModel() {
                 val stats = statisticsRepository.getStats()
                 recentUsers.value = stats.recentUsers
                 dailyUsers.value = stats.dailyUsers
-                properties.value = stats.properties.keys.toList()
+                properties.value = stats.properties.keys.sorted()
             } catch (t: Throwable) {
                 Log.e("MainViewModel", "Error getting stats", t)
             }
