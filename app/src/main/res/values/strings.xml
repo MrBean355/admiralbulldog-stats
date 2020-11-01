@@ -11,11 +11,15 @@
     <string name="title_pref_token">Token</string>
     <string name="summary_pref_token">Token for fetching the statistics</string>
 
+    <string name="key_pref_refresh_mods">pref_key_refresh_mods</string>
+    <string name="title_pref_refresh_mods">Refresh mods</string>
+    <string name="summary_pref_refresh_mods">Invalidate the in-memory cache of mods</string>
+
     <string name="key_pref_shut_down">pref_key_shut_down</string>
     <string name="title_pref_shut_down">Shut down</string>
     <string name="summary_pref_shut_down">Shut down the backend</string>
     <string name="title_confirm">Confirm</string>
     <string name="message_confirm_shut_down">Really shut the backend down?</string>
-    <string name="message_shut_down_success">Shut down was successful</string>
-    <string name="message_shut_down_error">Shut down failed</string>
+    <string name="message_operation_success">Operation was successful</string>
+    <string name="message_operation_error">Operation failed</string>
 </resources>

@@ -16,6 +16,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.preferences)
 
+        findPreference<Preference>(getString(R.string.key_pref_refresh_mods))?.setOnPreferenceClickListener {
+            viewModel.onRefreshModsClicked {
+                showSnackBar(success = it)
+            }
+            true
+        }
         findPreference<Preference>(getString(R.string.key_pref_shut_down))?.setOnPreferenceClickListener {
             showConfirmDialog()
             true
@@ -38,9 +44,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun showSnackBar(success: Boolean) {
         val view = view ?: return
         if (success) {
-            Snackbar.make(view, R.string.message_shut_down_success, Snackbar.LENGTH_LONG).showSuccess()
+            Snackbar.make(view, R.string.message_operation_success, Snackbar.LENGTH_LONG).showSuccess()
         } else {
-            Snackbar.make(view, R.string.message_shut_down_error, Snackbar.LENGTH_LONG).showError()
+            Snackbar.make(view, R.string.message_operation_error, Snackbar.LENGTH_LONG).showError()
         }
     }
 }

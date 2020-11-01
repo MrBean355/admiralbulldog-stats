@@ -52,6 +52,10 @@ class StatisticsRepository {
         }
     }
 
+    suspend fun refreshMods() = withContext(IO) {
+        service.refreshMods(loadToken())
+    }
+
     suspend fun shutDown() = withContext(IO) {
         try {
             service.shutDown(loadToken())
@@ -75,6 +79,9 @@ private interface StatisticsService {
 
     @GET("statistics/get")
     suspend fun getStatistics(@Query("token") token: String): StatisticsResponse
+
+    @GET("mods/refresh")
+    suspend fun refreshMods(@Query("token") token: String)
 
     @GET("metadata/shutdown")
     suspend fun shutDown(@Query("token") token: String)
