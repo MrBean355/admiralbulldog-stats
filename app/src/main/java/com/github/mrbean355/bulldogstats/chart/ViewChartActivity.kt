@@ -13,6 +13,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mrbean355.bulldogstats.BackButtonActivity
 import com.github.mrbean355.bulldogstats.R
 import com.github.mrbean355.bulldogstats.StatisticsAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_view_chart.*
 
 private const val SLICE_SPACE_DP = 4f
@@ -20,6 +21,7 @@ private const val VALUE_TEXT_SIZE_DP = 18f
 private const val ANIM_DURATION_MS = 750
 private const val KEY_PROPERTY_KEY = "PROPERTY_KEY"
 
+@AndroidEntryPoint
 class ViewChartActivity : BackButtonActivity(R.layout.activity_view_chart) {
     private val viewModel by viewModels<ViewChartViewModel>()
 
@@ -46,7 +48,7 @@ class ViewChartActivity : BackButtonActivity(R.layout.activity_view_chart) {
         }
         viewModel.properties.observe(this) { data ->
             pie_chart.data = PieData(PieDataSet(
-                    data.map { PieEntry(it.value.toFloat(), it.key) }, key
+                data.map { PieEntry(it.value.toFloat(), it.key) }, key
             ).also {
                 it.colors = ColorTemplate.COLORFUL_COLORS.toList()
                 it.sliceSpace = SLICE_SPACE_DP

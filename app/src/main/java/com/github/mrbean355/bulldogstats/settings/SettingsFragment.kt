@@ -9,7 +9,9 @@ import com.github.mrbean355.bulldogstats.R
 import com.github.mrbean355.bulldogstats.showError
 import com.github.mrbean355.bulldogstats.showSuccess
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat() {
     private val viewModel by viewModels<SettingsViewModel>()
 
@@ -30,15 +32,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun showConfirmDialog() {
         AlertDialog.Builder(requireContext())
-                .setTitle(R.string.title_confirm)
-                .setMessage(R.string.message_confirm_shut_down)
-                .setNegativeButton(android.R.string.cancel, null)
-                .setPositiveButton(R.string.action_shut_down) { _, _ ->
-                    viewModel.onShutDownClicked {
-                        showSnackBar(success = it)
-                    }
+            .setTitle(R.string.title_confirm)
+            .setMessage(R.string.message_confirm_shut_down)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(R.string.action_shut_down) { _, _ ->
+                viewModel.onShutDownClicked {
+                    showSnackBar(success = it)
                 }
-                .show()
+            }
+            .show()
     }
 
     private fun showSnackBar(success: Boolean) {

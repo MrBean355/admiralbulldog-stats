@@ -13,8 +13,10 @@ import com.github.mrbean355.bulldogstats.R
 import com.github.mrbean355.bulldogstats.StatisticsAdapter
 import com.github.mrbean355.bulldogstats.chart.ViewChartActivity
 import com.github.mrbean355.bulldogstats.settings.SettingsActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel>()
 

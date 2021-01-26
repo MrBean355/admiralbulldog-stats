@@ -1,18 +1,7 @@
 package com.github.mrbean355.bulldogstats
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class StatisticsApplication : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-        instance = this
-    }
-
-    companion object {
-        private var instance: Application? = null
-
-        fun getInstance(): Application = instance!!
-
-    }
-}
+@HiltAndroidApp
+class StatisticsApplication : Application()
