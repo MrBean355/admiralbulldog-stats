@@ -38,6 +38,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.dailyUsers.observe(this) {
             daily_users.text = getString(R.string.label_daily_users, it)
         }
+        viewModel.monthlyUsers.observe(this) {
+            monthly_users.text = getString(R.string.label_monthly_users, it)
+        }
         viewModel.properties.observe(this) {
             adapter.submitList(it)
         }

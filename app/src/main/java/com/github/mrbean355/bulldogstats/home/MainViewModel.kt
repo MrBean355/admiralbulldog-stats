@@ -6,13 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.mrbean355.bulldogstats.data.StatisticsRepository
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 class MainViewModel : ViewModel() {
     private val statisticsRepository = StatisticsRepository()
 
     val loading = MutableLiveData<Boolean>()
-    val recentUsers = MutableLiveData<Int>()
-    val dailyUsers = MutableLiveData<Int>()
+    val recentUsers = MutableLiveData<Long>()
+    val dailyUsers = MutableLiveData<Long>()
+    val monthlyUsers = MutableLiveData<Long>()
     val properties = MutableLiveData<List<String>>()
 
     init {
@@ -21,7 +23,6 @@ class MainViewModel : ViewModel() {
 
     fun onRefreshClicked() {
         viewModelScope.launch {
-            statisticsRepository.invalidate()
             loadStatistics()
         }
     }
@@ -30,10 +31,10 @@ class MainViewModel : ViewModel() {
         loading.value = true
         viewModelScope.launch {
             try {
-                val stats = statisticsRepository.getStats()
-                recentUsers.value = stats.recentUsers
-                dailyUsers.value = stats.dailyUsers
-                properties.value = stats.properties.keys.sorted()
+                properties.value = statisticsRepository.listProperties()
+                recentUsers.value = statisticsRepository.countRecentUsers(5)
+                dailyUsers.value = statisticsRepository.countRecentUsers(TimeUnit.DAYS.toMinutes(1))
+                monthlyUsers.value = statisticsRepository.countRecentUsers(TimeUnit.DAYS.toMinutes(30))
             } catch (t: Throwable) {
                 Log.e("MainViewModel", "Error getting stats", t)
             }

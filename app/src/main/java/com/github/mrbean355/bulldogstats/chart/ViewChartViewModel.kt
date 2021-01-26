@@ -9,16 +9,20 @@ import kotlinx.coroutines.launch
 class ViewChartViewModel : ViewModel() {
     private val statisticsRepository = StatisticsRepository()
 
+    val loading = MutableLiveData<Boolean>()
     val breakdown = MutableLiveData<List<String>>()
     val properties = MutableLiveData<Map<String, Int>>()
 
     fun initialise(key: String) {
+        loading.value = true
         viewModelScope.launch {
-            val data = statisticsRepository.getProperties(key)
+            val data = statisticsRepository.getStatistic(key)
             properties.value = data
             breakdown.value = data.keys
                     .sortedByDescending { data[it] }
                     .map { "${it.toLowerCase().capitalize()}: ${data[it]}" }
+
+            loading.value = false
         }
     }
 }

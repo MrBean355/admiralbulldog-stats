@@ -6,6 +6,8 @@
     <string name="action_shut_down">Shut down</string>
     <string name="label_recent_users">Recent users: %d</string>
     <string name="label_daily_users">Daily users: %d</string>
+    <string name="label_monthly_users">Monthly users: %d</string>
+    <string name="label_properties">Properties:</string>
 
     <string name="key_pref_token">pref_key_token</string>
     <string name="title_pref_token">Token</string>

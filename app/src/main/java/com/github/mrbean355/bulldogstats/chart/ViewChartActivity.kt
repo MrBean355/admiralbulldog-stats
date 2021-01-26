@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -37,6 +38,9 @@ class ViewChartActivity : BackButtonActivity(R.layout.activity_view_chart) {
         title = key
 
         viewModel.initialise(key)
+        viewModel.loading.observe(this) {
+            progress_bar.isVisible = it
+        }
         viewModel.breakdown.observe(this) {
             adapter.submitList(it)
         }

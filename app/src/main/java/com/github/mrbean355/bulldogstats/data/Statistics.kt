@@ -5,24 +5,16 @@ import com.github.mrbean355.bulldogstats.BuildConfig
 import com.github.mrbean355.bulldogstats.R
 import com.github.mrbean355.bulldogstats.StatisticsApplication
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.io.EOFException
 
-data class StatisticsResponse(
-        val recentUsers: Int,
-        val dailyUsers: Int,
-        val properties: Map<String, Map<String, Int>>
-)
-
-private val lock = Mutex()
-private var cache: StatisticsResponse? = null
+private val cache = mutableMapOf<String, Map<String, Int>>()
 
 class StatisticsRepository {
     private val service = Retrofit.Builder()
@@ -31,25 +23,23 @@ class StatisticsRepository {
             .build()
             .create<StatisticsService>()
 
-    suspend fun getStats(): StatisticsResponse = withContext(IO) {
-        lock.withLock {
-            var localCache = cache
-            if (localCache == null) {
-                localCache = service.getStatistics(loadToken())
-                cache = localCache
+    suspend fun listProperties(): List<String> = withContext(IO) {
+        cache.clear()
+        service.listProperties(loadToken()).sorted()
+    }
+
+    suspend fun getStatistic(property: String): Map<String, Int> = withContext(IO) {
+        if (property in cache) {
+            cache.getValue(property)
+        } else {
+            service.getStatistic(property, loadToken()).also {
+                cache[property] = it
             }
-            localCache
         }
     }
 
-    suspend fun getProperties(key: String): Map<String, Int> = withContext(IO) {
-        getStats().properties.getValue(key)
-    }
-
-    suspend fun invalidate() {
-        lock.withLock {
-            cache = null
-        }
+    suspend fun countRecentUsers(minutes: Long): Long = withContext(IO) {
+        service.getRecentUsers(loadToken(), minutes)
     }
 
     suspend fun refreshMods() = withContext(IO) {
@@ -77,8 +67,14 @@ private fun loadToken(): String {
 
 private interface StatisticsService {
 
-    @GET("statistics/get")
-    suspend fun getStatistics(@Query("token") token: String): StatisticsResponse
+    @GET("statistics/properties")
+    suspend fun listProperties(@Query("token") token: String): List<String>
+
+    @GET("statistics/recentUsers")
+    suspend fun getRecentUsers(@Query("token") token: String, @Query("period") period: Long): Long
+
+    @GET("statistics/{property}")
+    suspend fun getStatistic(@Path("property") property: String, @Query("token") token: String): Map<String, Int>
 
     @GET("mods/refresh")
     suspend fun refreshMods(@Query("token") token: String)
