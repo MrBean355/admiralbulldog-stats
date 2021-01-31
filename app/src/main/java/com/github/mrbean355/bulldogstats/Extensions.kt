@@ -12,3 +12,6 @@ fun Snackbar.showError() {
     view.setBackgroundColor(ContextCompat.getColor(view.context, R.color.error))
     show()
 }
+
+fun String.formatProperty(): String =
+    split('.').joinToString(". ", transform = String::capitalize)

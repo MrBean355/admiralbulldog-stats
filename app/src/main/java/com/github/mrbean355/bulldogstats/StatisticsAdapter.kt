@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class StatisticsAdapter(
-        private val horizontal: Boolean,
-        private val onItemClicked: (String) -> Unit = {}
+    private val horizontal: Boolean,
+    private val onItemClicked: (String) -> Unit = {}
 ) : ListAdapter<String, StatisticsAdapter.ViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,7 +19,7 @@ class StatisticsAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        (holder.itemView as TextView).text = getItem(position)
+        (holder.itemView as TextView).text = getItem(position).formatProperty()
         holder.itemView.setOnClickListener {
             onItemClicked(getItem(holder.adapterPosition))
         }

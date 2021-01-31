@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         statistics.adapter = adapter
         statistics.addItemDecoration(DividerItemDecoration(this, VERTICAL))
 
+        refresh_fab.setOnClickListener {
+            viewModel.onRefreshClicked()
+        }
+
         viewModel.loading.observe(this) {
             progress_bar.isVisible = it
         }
@@ -54,10 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.refresh) {
-            viewModel.onRefreshClicked()
-            return true
-        } else if (item.itemId == R.id.settings) {
+        if (item.itemId == R.id.settings) {
             startActivity(Intent(this, SettingsActivity::class.java))
             return true
         }

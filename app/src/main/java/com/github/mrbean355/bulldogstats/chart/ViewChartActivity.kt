@@ -13,6 +13,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mrbean355.bulldogstats.BackButtonActivity
 import com.github.mrbean355.bulldogstats.R
 import com.github.mrbean355.bulldogstats.StatisticsAdapter
+import com.github.mrbean355.bulldogstats.formatProperty
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_view_chart.*
 
@@ -37,7 +38,7 @@ class ViewChartActivity : BackButtonActivity(R.layout.activity_view_chart) {
         breakdown.adapter = adapter
 
         val key = intent.getStringExtra(KEY_PROPERTY_KEY).orEmpty()
-        title = key
+        title = key.formatProperty()
 
         viewModel.initialise(key)
         viewModel.loading.observe(this) {
