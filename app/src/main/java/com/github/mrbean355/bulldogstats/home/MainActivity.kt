@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration.VERTICAL
 import com.github.mrbean355.bulldogstats.R
 import com.github.mrbean355.bulldogstats.StatisticsAdapter
 import com.github.mrbean355.bulldogstats.chart.ViewChartActivity
+import com.github.mrbean355.bulldogstats.formatProperty
 import com.github.mrbean355.bulldogstats.settings.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = StatisticsAdapter(horizontal = false) {
+        val adapter = StatisticsAdapter(formatter = String::formatProperty) {
             startActivity(ViewChartActivity(this, it))
         }
         statistics.adapter = adapter

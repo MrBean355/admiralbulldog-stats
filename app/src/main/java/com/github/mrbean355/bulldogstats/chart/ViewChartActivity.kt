@@ -34,7 +34,7 @@ class ViewChartActivity : BackButtonActivity(R.layout.activity_view_chart) {
         pie_chart.setEntryLabelTextSize(16f)
         pie_chart.isHighlightPerTapEnabled = false
 
-        val adapter = StatisticsAdapter(horizontal = true)
+        val adapter = StatisticsAdapter()
         breakdown.adapter = adapter
 
         val key = intent.getStringExtra(KEY_PROPERTY_KEY).orEmpty()
